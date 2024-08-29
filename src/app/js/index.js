@@ -1,7 +1,7 @@
-import * as databaseConnection from "./js/databaseConnection.js";
-import { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, initMap } from "./js/map.js";
-import { updateForm, validateFormValues } from "./js/form.js";
-import { buildVines } from "./js/background.js";
+import * as databaseConnection from "./databaseConnection.js";
+import { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, initMap } from "./map.js";
+import { updateForm, validateFormValues } from "./form.js";
+import { buildVines } from "./background.js";
 
 const qs = element => document.querySelector(element);
 

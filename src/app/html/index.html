@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/global.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <title>Mapa</title>
+</head>
+<body>
+    <div id="background"></div>
+
+    <section id="main_section">
+        <div id="map"></div>
+    
+        <form id="map_form">
+            <img src="./src/app/assets/tree_placeholder.png" alt="Imagem da planta selecionada" id="map_form-plant_image">
+
+            <div class="map_form-input_style">
+                <label for="name" class="map_form-label">Nome regional</label>
+                <input type="text" name="name" class="map_form-input" id="map_form-name" placeholder="Milho"/>
+            </div>
+            <div class="map_form-input_style">
+                <label for="scientific" class="map_form-label">Nome científico</label>
+                <input type="text" name="scientific" class="map_form-input" id="map_form-scientific" placeholder="Zea mays"/>
+            </div>
+            <div class="map_form-input_style">
+                <label for="image" class="map_form-label">Imagem</label>
+                <input type="text" name="image" class="map_form-input" id="map_form-image" placeholder="https://www.google.com/images/minha_planta_favorita.png"/>
+            </div>
+            <div class="map_form-input_style">
+                <label for="coordinates" class="map_form-label">Coordenadas</label>
+                <input type="text" name="coordinates" class="map_form-input" id="map_form-coordinates" readonly="readonly" placeholder="Coordenadas"/>
+            </div>
+    
+            <div id="map_form-buttons_div">
+                <button class="map_form-button" id="map_form-create_button">Plantar</button>
+                <button class="map_form-button" id="map_form-delete_button">Derrubar</button>
+                <button class="map_form-button" id="map_form-update_button">Fertilizar</button>
+            </div>
+        </form>
+    </section>
+
+    <script type="module" src="../js/index.js"></script>
+</body>
+</html>
