@@ -1,7 +1,10 @@
 import { Plant } from "../database/models/Plant.js";
 
-async function listPlants(_, response) {
-    const plants = await Plant.findAll();
+async function listPlants(request, response) {
+    const queryProperties = {};
+    if (request.query.search) queryProperties["$text"] = {$search:request.query.search};
+
+    const plants = await Plant.findAll(queryProperties);
     response.json(plants);
 }
 
@@ -9,11 +12,6 @@ async function listSimplifiedPlants(_, response) {
     const plants = await Plant.findAll().then(plants => (plants
         .map(plant => ({id: plant.id, name: plant.name, geometry: plant.geometry}))));
 
-    response.json(plants);
-}
-
-async function searchPlants(request, response) {
-    const plants = await Plant.findAll({$text: {$search: request.params.search}});
     response.json(plants);
 }
 
@@ -37,4 +35,4 @@ async function deletePlant(request, response) {
     response.json({});
 }
 
-export { listPlants, listSimplifiedPlants, searchPlants, listPlant, createPlant, updatePlant, deletePlant };
+export { listPlants, listSimplifiedPlants, listPlant, createPlant, updatePlant, deletePlant };

@@ -47,10 +47,29 @@
     padding: 5%;
 }
 
+#map_container {
+    position: relative;
+}
+
 #map {
     border-radius: 12px;
     height: 100%;
     z-index: 2;
+}
+
+#map_container-search_input {
+    position: absolute;
+    font-size: 1.4rem;
+    border: 1px solid black;
+    border-radius: 12px;
+    width: 50%;
+    min-width: 260px;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px;
+    z-index: 2;
+    outline: none;
 }
 
 #map_form {
@@ -60,6 +79,7 @@
     align-items: center;
     gap: 30px;
     height: fit-content;
+    overflow: scroll;
 }
 
 #map, #map_form {

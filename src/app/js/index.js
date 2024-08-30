@@ -1,9 +1,11 @@
 import * as databaseConnection from "./databaseConnection.js";
-import { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, initMap } from "./map.js";
+import { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, applySearch, initMap } from "./map.js";
 import { updateForm, validateFormValues } from "./form.js";
 import { buildVines } from "./background.js";
 
 const qs = element => document.querySelector(element);
+
+let timeout = setTimeout(() => {}, 1);
 
 const createButtonClickEvent = async (event) => {
     event.preventDefault();
@@ -52,6 +54,11 @@ const deleteButtonClickEvent = async (event, id, marker) => {
     }
 }
 
+const searchEvent = async (event) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => applySearch(event.target.value), 1000);
+}
+
 initMap();
 updateForm();
 buildVines();
@@ -59,3 +66,4 @@ buildVines();
 qs("#map_form-create_button").addEventListener("click", createButtonClickEvent);
 qs("#map_form-update_button").addEventListener("click", (event) => updateButtonClickEvent(event, globalThis.plantId, globalThis.focusedMarker));
 qs("#map_form-delete_button").addEventListener("click", (event) => deleteButtonClickEvent(event, globalThis.plantId, globalThis.focusedMarker));
+qs("#map_container-search_input").addEventListener("input", searchEvent);

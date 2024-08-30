@@ -1,4 +1,4 @@
-const imagePath = "./src/app/assets/vine.png";
+const imagePath = "../assets/vine.png";
 const maxImageWidth = 300;
 
 const buildVine = options => {

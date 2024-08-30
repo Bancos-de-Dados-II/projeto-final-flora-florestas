@@ -19,7 +19,8 @@ const request = async (path, object) => {
 const create = async (data) => request("", {method: "POST", body: data});
 const getSimplified = async () => request("simplified", {method: "GET"});
 const getPlant = async (id) => request(id, {method: "GET"});
+const getPlants = async (search) => request(`?search=${search}`, {method: "GET"});
 const update = async (id, data) => request(id, {method: "PUT", body: data});
 const deletePlant = async (id) => request(id, {method: "DELETE"});
 
-export { create, getSimplified, getPlant, update, deletePlant };
+export { create, getSimplified, getPlant, getPlants, update, deletePlant };

@@ -5,18 +5,19 @@ const initialLatLng = [-6.889571480980119, -38.54529244638661];
 const formLocation = document.querySelector("#map_form-coordinates");
 
 const map = L.map("map", {center: initialLatLng, zoom: 20});
-const selectedPlaceMarker = L.marker(initialLatLng, {icon: L.icon({iconUrl: "./src/app/assets/watering_can.svg", iconSize: [80, 80], iconAnchor: [75, 65]})}).addTo(map);
+const markers = L.layerGroup().addTo(map);
+const selectedPlaceMarker = L.marker(initialLatLng, {icon: L.icon({iconUrl: "../assets/watering_can.svg", iconSize: [80, 80], iconAnchor: [75, 65]})}).addTo(map);
 
 const focusMarker = marker => {
     unfocusMarker(globalThis.focusedMarker);
     selectedPlaceMarker.setOpacity(0);
     map.setView(marker.getLatLng());
-    marker.setIcon(L.icon({iconUrl: "./src/app/assets/tree_focus_pin.svg", iconSize: [80, 80]}));
+    marker.setIcon(L.icon({iconUrl: "../assets/tree_focus_pin.svg", iconSize: [80, 80]}));
     globalThis.focusedMarker = marker;
 }
 
 const unfocusMarker = marker => {
-    marker?.setIcon(L.icon({iconUrl: "./src/app/assets/tree_pin.svg", iconSize: [50, 50]}));
+    marker?.setIcon(L.icon({iconUrl: "../assets/tree_pin.svg", iconSize: [50, 50]}));
     globalThis.focusedMarker = null;
     removeImage();
 }
@@ -43,12 +44,12 @@ const selectedPlaceMarkerUpdateEvent = event => {
 const createMarker = markerObject => {
     const coordinates = markerObject.geometry.coordinates.reverse();
     const locationMarker = L.marker(coordinates, {
-        icon: L.icon({iconUrl: "./src/app/assets/seed_pin.svg", iconSize: [30, 30]}),
+        icon: L.icon({iconUrl: "../assets/seed_pin.svg", iconSize: [30, 30]}),
         title: markerObject.name,
         alt: markerObject.name,
         draggable: true,
         autoPan: true
-    }).addTo(map);
+    }).addTo(markers);
 
     locationMarker.addEventListener("click", async () => {
         const plant = await databaseConnection.getPlant(markerObject.id);
@@ -78,6 +79,16 @@ const createMarker = markerObject => {
     });
 }
 
+const applySearch = async (search) => {
+    try {
+        const plants = await databaseConnection.getPlants(search);
+        markers.clearLayers();
+        plants.forEach(createMarker);
+    } catch {
+        window.alert(`Não foi possível recuperar plantas da espécie ${search} documentadas anteriormente...`);
+    }
+}
+
 const initMap = async () => {
     try {
         await databaseConnection.getSimplified().then(plants => plants.forEach(createMarker));
@@ -93,4 +104,4 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 map.on("locationfound", selectedPlaceMarkerUpdateEvent);
 map.on("click", selectedPlaceMarkerUpdateEvent);
 
-export { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, initMap };
+export { removeMarker, selectedPlaceMarkerUpdateEvent, createMarker, applySearch, initMap };

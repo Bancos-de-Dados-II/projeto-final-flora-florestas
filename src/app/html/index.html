@@ -18,10 +18,13 @@
     <div id="background"></div>
 
     <section id="main_section">
-        <div id="map"></div>
+        <div id="map_container">
+            <div id="map"></div>
+            <input type="text" name="search" id="map_container-search_input" placeholder="Pesquisar" />
+        </div>
     
         <form id="map_form">
-            <img src="./src/app/assets/tree_placeholder.png" alt="Imagem da planta selecionada" id="map_form-plant_image">
+            <img src="../assets/tree_placeholder.png" alt="Imagem da planta selecionada" id="map_form-plant_image">
 
             <div class="map_form-input_style">
                 <label for="name" class="map_form-label">Nome regional</label>

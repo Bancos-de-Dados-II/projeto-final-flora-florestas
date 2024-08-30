@@ -5,7 +5,6 @@ const PlantRouter = express.Router();
 
 PlantRouter.get("/", PlantController.listPlants);
 PlantRouter.get("/simplified", PlantController.listSimplifiedPlants);
-PlantRouter.get("/:search", PlantController.searchPlants);
 PlantRouter.get("/:id", PlantController.listPlant);
 PlantRouter.post("/", PlantController.createPlant);
 PlantRouter.put("/:id", PlantController.updatePlant);

@@ -26,7 +26,7 @@ const displayCreateButtons = () => displayButtons("create");
 const displayUpdateButtons = () => displayButtons("update");
 
 const displayImage = src => qs("#map_form-plant_image").setAttribute("src", src);
-const removeImage = () => displayImage("./src/app/assets/tree_placeholder.png");
+const removeImage = () => displayImage("../assets/tree_placeholder.png");
 
 const validateFormValues = () => {
     const emptyValues = Object.values(form).map(input => input.value.replace(" ", "")).filter(value => !value).length;
