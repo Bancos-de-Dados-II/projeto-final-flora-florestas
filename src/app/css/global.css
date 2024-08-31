@@ -13,3 +13,13 @@ html {
 button, button * {
     cursor: pointer;
 }
+
+input {
+    outline: none;
+}
+
+.vine {
+    height: auto;
+    position: fixed;
+    z-index: 3;
+}

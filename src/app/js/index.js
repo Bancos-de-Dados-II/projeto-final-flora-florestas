@@ -59,6 +59,14 @@ const searchEvent = async (event) => {
     timeout = setTimeout(() => applySearch(event.target.value), 1000);
 }
 
+const redirect = () => {
+    const currentUrl = window.location.href.split("/");
+    currentUrl.pop();
+    const urlBase = currentUrl.join("/");
+
+    window.location = urlBase + "/charts.html";
+}
+
 initMap();
 updateForm();
 buildVines();
@@ -67,3 +75,4 @@ qs("#map_form-create_button").addEventListener("click", createButtonClickEvent);
 qs("#map_form-update_button").addEventListener("click", (event) => updateButtonClickEvent(event, globalThis.plantId, globalThis.focusedMarker));
 qs("#map_form-delete_button").addEventListener("click", (event) => deleteButtonClickEvent(event, globalThis.plantId, globalThis.focusedMarker));
 qs("#map_container-search_input").addEventListener("input", searchEvent);
+qs("#map_container-button").addEventListener("click", redirect);
