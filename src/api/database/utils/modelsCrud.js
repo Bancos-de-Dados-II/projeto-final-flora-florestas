@@ -9,16 +9,23 @@ function filterFields(model, request) {
 }
 
 function validateRestrictions(model, request) {
+    function throwError(key) {
+        throw new Error(`400 BAD REQUEST: Field '${key}' can't be null`);
+    }
+
     Object.keys(model).forEach(key => {
-        if (model[key].required && request[key] === null) {
-            throw new Error(`400 BAD REQUEST: Field '${key}' can't be null`);
-        }
+        if (model[key].required && request[key] === undefined) throwError(key);
     });
+
+    if (model.geometry && 
+        (request.geometry?.type !== "Point" || request.geometry?.coordinates?.length !== 2)) {
+            throwError("geometry");
+    }
 }
 
 async function create(connection, model, type, request) {
-    validateRestrictions(model, request);
     const filteredRecord = filterFields(model, request);
+    validateRestrictions(model, filteredRecord);
     
     try {
         const createdRecord = await connection.create(filteredRecord);
@@ -26,7 +33,7 @@ async function create(connection, model, type, request) {
         return createdRecord;
     } catch (error) {
         console.log(`Failed to create on ${type} database`);
-        console.log(error);
+        throw error;
     }
 }
 
@@ -35,12 +42,17 @@ async function findById(connection, type, id) {
         return connection.findById(id).exec();
     } catch (error) {
         console.log(`Failed to find '${id}' on '${type}' database`);
-        console.log(error);
+        throw error;
     }
 }
 
 async function findAll(connection, queryProperties = {}) {
-    return connection.find(queryProperties).exec();
+    try {
+        return connection.find(queryProperties).exec();
+    } catch (error) {
+        console.log(`Failed to find all on '${type}' database`);
+        throw error;
+    }
 }
 
 async function update(connection, model, type, id, request) {
@@ -55,11 +67,10 @@ async function update(connection, model, type, id, request) {
     try {
         await data.save();
         console.log(`Success to update ${id} on ${type} database`);
-        console.log(data);
         return data;
     } catch (error) {
         console.log(`Failed to update '${id}' on '${type}' database`);
-        console.log(error);
+        throw error;
     }
 }
 
@@ -69,7 +80,7 @@ async function deleteRecord(connection, type, id) {
         console.log(`Success to delete ${id} on ${type} database`);
     } catch (error) {
         console.log(`Failed to delete '${id}' on '${type}' database`);
-        console.log(error);
+        throw error;
     }
 }
 
