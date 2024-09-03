@@ -2,9 +2,11 @@ import express from "express";
 import cors from "cors";
 import { configDotenv } from "dotenv";
 import { mongooseConnection } from "./database/mongooseConnection.js";
+import { redisConnection } from "./database/redisConnection.js";
 import { PlantRouter } from "./router/PlantRouter.js";
 
 mongooseConnection();
+redisConnection();
 configDotenv();
 
 const app = express();

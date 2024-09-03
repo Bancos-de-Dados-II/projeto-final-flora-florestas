@@ -1,4 +1,7 @@
 import { Plant } from "../database/models/Plant.js";
+import { redis } from "../database/redisConnection.js";
+
+const redisSimplifiedPlantsKey = "simplifiedPlants";
 
 async function listPlants(request, response) {
     const queryProperties = {};
@@ -9,10 +12,18 @@ async function listPlants(request, response) {
 }
 
 async function listSimplifiedPlants(_, response) {
-    const plants = await Plant.findAll().then(plants => (plants
-        .map(plant => ({id: plant.id, name: plant.name, geometry: plant.geometry}))));
+    const redisPlants = await redis.get(redisSimplifiedPlantsKey);
 
-    response.json(plants);
+    if (redisPlants) {
+        response.json(JSON.parse(redisPlants));
+    } else {
+        const plants = await Plant.findAll().then(plants => (plants
+            .map(plant => ({id: plant.id, name: plant.name, geometry: plant.geometry}))));
+
+        redis.set(redisSimplifiedPlantsKey, JSON.stringify(plants), {EX: 3600});
+    
+        response.json(plants);
+    }
 }
 
 async function listPlant(request, response) {
@@ -22,16 +33,19 @@ async function listPlant(request, response) {
 
 async function createPlant(request, response) {
     const createdPlant = await Plant.create(request.body);
+    redis.del(redisSimplifiedPlantsKey);
     response.status(201).json(createdPlant);
 }
 
 async function updatePlant(request, response) {
     const updatedPlant = await Plant.update(request.params.id, request.body);
+    redis.del(redisSimplifiedPlantsKey);
     response.json(updatedPlant);
 }
 
 async function deletePlant(request, response) {
     await Plant.delete(request.params.id);
+    redis.del(redisSimplifiedPlantsKey);
     response.json({});
 }
 
