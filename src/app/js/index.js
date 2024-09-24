@@ -32,7 +32,7 @@ const updateButtonClickEvent = async (event, id, marker) => {
     try {
         const savedPlant = await databaseConnection.update(id, plant);
         removeMarker(marker);
-        createMarker(savedPlant);
+        createMarker({...savedPlant, id: savedPlant._id});
         selectedPlaceMarkerUpdateEvent({latlng: savedPlant.geometry.coordinates});
     } catch {
         window.alert("Oops, algo deu errado...");
